@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+
+   <extension
+         point="org.eclipse.ui.commands">
+      <command
+            id="dk.danamlund.quicklaunch.commands.run"
+            name="Run Launch Configuration">
+      </command>
+      <command
+            id="dk.danamlund.quicklaunch.commands.debug"
+            name="Debug Launch Configuration">
+      </command>
+   </extension>
+   <extension
+         point="org.eclipse.ui.handlers">
+      <handler
+            class="dk.danamlund.quicklaunch.QuickRunLaunchConfigurationHandler"
+            commandId="dk.danamlund.quicklaunch.commands.run">
+      </handler>
+      <handler
+            class="dk.danamlund.quicklaunch.QuickDebugLaunchConfigurationHandler"
+            commandId="dk.danamlund.quicklaunch.commands.debug">
+      </handler>
+   </extension>
+   <extension
+         point="org.eclipse.ui.bindings">
+      <key
+            commandId="dk.danamlund.quicklaunch.commands.run"
+            contextId="org.eclipse.ui.contexts.window"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="Shift+Ctrl+Y">
+      </key>
+      <key
+            commandId="dk.danamlund.quicklaunch.commands.debug"
+            contextId="org.eclipse.ui.contexts.window"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="Shift+Ctrl+D">
+      </key>
+   </extension>
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            locationURI="menu:org.eclipse.ui.run?endof=stepIntoGroup">
+         <separator
+               name="dk.danamlund.quicklaunch.separator"
+               visible="true">
+         </separator>
+         <menu
+               label="Quick Launch Configuration">
+            <command
+                  commandId="dk.danamlund.quicklaunch.commands.run"
+                  style="push">
+            </command>
+            <command
+                  commandId="dk.danamlund.quicklaunch.commands.debug"
+                  style="push">
+            </command>
+         </menu>
+      </menuContribution>
+   </extension>
+
+</plugin>
