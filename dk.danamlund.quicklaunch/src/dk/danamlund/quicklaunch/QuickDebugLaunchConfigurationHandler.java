@@ -16,4 +16,12 @@ public class QuickDebugLaunchConfigurationHandler extends AbstractHandler {
 		quickLauncher.showQuickLaunchDialog();
 		return null;
 	}
+
+	@Override
+	public void dispose() {
+		super.dispose();
+		if (quickLauncher != null) {
+			quickLauncher.dispose();
+		}
+	}
 }

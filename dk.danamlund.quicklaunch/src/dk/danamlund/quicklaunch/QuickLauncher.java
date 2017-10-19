@@ -13,21 +13,23 @@ import org.eclipse.debug.core.ILaunchManager;
 public class QuickLauncher {
 	private final String runMode;
 	private final QuickLaunchConfigurationDialog dialog;
+	private final ReloadLaunchersListener listener;
 
 	public QuickLauncher(String runMode) {
 		this.runMode = runMode;
 		this.dialog = new QuickLaunchConfigurationDialog(runMode);
-		
+
 		reloadLaunchers();
-		
+
 		ILaunchManager launchManager = DebugPlugin.getDefault().getLaunchManager();
-		launchManager.addLaunchConfigurationListener(new ReloadLaunchersListener());
+		listener = new ReloadLaunchersListener();
+		launchManager.addLaunchConfigurationListener(listener);
 	}
 
 	public void showQuickLaunchDialog() throws ExecutionException {
 		dialog.open();
 	}
-	
+
 	private void reloadLaunchers() {
 		try {
 			ILaunchManager launchManager = DebugPlugin.getDefault().getLaunchManager();
@@ -42,7 +44,7 @@ public class QuickLauncher {
 			throw new IllegalStateException(e);
 		}
 	}
-	
+
 	private class ReloadLaunchersListener implements ILaunchConfigurationListener {
 		@Override
 		public void launchConfigurationAdded(ILaunchConfiguration configuration) {
@@ -58,5 +60,10 @@ public class QuickLauncher {
 		public void launchConfigurationRemoved(ILaunchConfiguration configuration) {
 			reloadLaunchers();
 		}
+	}
+
+	public void dispose() {
+		ILaunchManager launchManager = DebugPlugin.getDefault().getLaunchManager();
+		launchManager.removeLaunchConfigurationListener(listener);
 	}
 }
