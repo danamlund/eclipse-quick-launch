@@ -1,19 +1,13 @@
 package dk.danamlund.quicklaunch;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
-import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunchConfiguration;
-import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.debug.ui.DebugUITools;
 import org.eclipse.debug.ui.IDebugModelPresentation;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.dialogs.ElementListSelectionDialog;
 import org.eclipse.ui.dialogs.FilteredList;
 import org.eclipse.ui.dialogs.FilteredList.FilterMatcher;
@@ -21,36 +15,11 @@ import org.eclipse.ui.dialogs.FilteredList.FilterMatcher;
 public class QuickLaunchConfigurationDialog extends ElementListSelectionDialog {
 	private final String runMode;
 
-	public static QuickLaunchConfigurationDialog newRunDialog(Shell parent) {
-		QuickLaunchConfigurationDialog dialog = new QuickLaunchConfigurationDialog(parent, ILaunchManager.RUN_MODE);
-		dialog.setTitle("Run Launch Configuration");
-		return dialog;
-	}
-
-	public static QuickLaunchConfigurationDialog newDebugDialog(Shell parent) {
-		QuickLaunchConfigurationDialog dialog = new QuickLaunchConfigurationDialog(parent, ILaunchManager.DEBUG_MODE);
-		dialog.setTitle("Debug Launch Configuration");
-		return dialog;
-	}
-
-	private QuickLaunchConfigurationDialog(Shell parent, String runMode) {
-		super(parent, new QuickLaunchConfigurationLabelProvider());
+	public QuickLaunchConfigurationDialog(String runMode) {
+		super(null, new QuickLaunchConfigurationLabelProvider());
 		this.runMode = runMode;
-		try {
-			ILaunchManager launchManager = DebugPlugin.getDefault().getLaunchManager();
-			List<ILaunchConfiguration> launchConfigurations = new ArrayList<>();
-			for (ILaunchConfiguration launchConfiguration : launchManager.getLaunchConfigurations()) {
-				if (launchConfiguration.supportsMode(runMode)) {
-					launchConfigurations.add(launchConfiguration);
-				}
-			}
-			setElements(launchConfigurations.toArray());
-			setInitialSelections(new Object[] { launchConfigurations.get(launchConfigurations.size() - 1) });
-		} catch (CoreException e) {
-			throw new IllegalStateException(e);
-		}
 
-		setBlockOnOpen(true);
+		setBlockOnOpen(false);
 	}
 
 	@Override
