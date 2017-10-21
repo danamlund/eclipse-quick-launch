@@ -7,6 +7,7 @@ import org.eclipse.debug.ui.DebugUITools;
 import org.eclipse.debug.ui.IDebugModelPresentation;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.dialogs.ElementListSelectionDialog;
 import org.eclipse.ui.dialogs.FilteredList;
@@ -14,12 +15,32 @@ import org.eclipse.ui.dialogs.FilteredList.FilterMatcher;
 
 public class QuickLaunchConfigurationDialog extends ElementListSelectionDialog {
 	private final String runMode;
+	private Object previousSelection = null;
 
 	public QuickLaunchConfigurationDialog(String runMode) {
 		super(null, new QuickLaunchConfigurationLabelProvider());
 		this.runMode = runMode;
 
 		setBlockOnOpen(false);
+	}
+
+	@Override
+	public int open() {
+		int output = super.open();
+
+		// Running initially selected element caused ok button to be disabled
+		// on next run until you search for something.
+		// This fixes that, without me having to understand why it happens.
+		Button okButton = getOkButton();
+		if (okButton != null) {
+			okButton.setEnabled(true);
+		}
+
+		if (previousSelection != null) {
+			setSelection(new Object[] { previousSelection });
+		}
+
+		return output;
 	}
 
 	@Override
@@ -40,6 +61,7 @@ public class QuickLaunchConfigurationDialog extends ElementListSelectionDialog {
 			} catch (CoreException e) {
 				throw new IllegalStateException(e);
 			}
+			previousSelection = launchConfiguration;
 		}
 	}
 
