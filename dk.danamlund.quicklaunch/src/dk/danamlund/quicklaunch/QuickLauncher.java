@@ -39,7 +39,7 @@ public class QuickLauncher {
 					launchConfigurations.add(launchConfiguration);
 				}
 			}
-			dialog.setElements(launchConfigurations.toArray());
+			dialog.setLaunchConfigurations(launchConfigurations);
 		} catch (CoreException e) {
 			throw new IllegalStateException(e);
 		}
