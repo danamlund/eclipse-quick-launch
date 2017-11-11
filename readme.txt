@@ -1,6 +1,6 @@
 Eclipse quick launch
 
-Run launch configurations like Ctrl-Shift-T
+Run launch configurations like Ctrl-Shift-D
 
 Launch with Ctrl-Shift-Y
 or (debug) with Ctrl-Shift-D
